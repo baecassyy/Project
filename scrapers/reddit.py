@@ -73,7 +73,10 @@ def _fetch_with_praw(subreddit: str, cutoff: datetime) -> list[Article]:
 def _fetch_with_json_api(subreddit: str, cutoff: datetime) -> list[Article]:
     """Unauthenticated fallback — rate-limited to ~60 req/min."""
     url = f"https://www.reddit.com/r/{subreddit}/new.json"
-    headers = {"User-Agent": REDDIT_USER_AGENT}
+    headers = {
+        "User-Agent": "Mozilla/5.0 (compatible; smb-newsletter-bot/1.0 by u/newsletter_bot)",
+        "Accept": "application/json",
+    }
     articles: list[Article] = []
     after: str | None = None
 

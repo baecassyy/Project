@@ -2,6 +2,7 @@
 RSS scraper for TechCrunch and The Verge.
 Uses feedparser; no API keys required.
 """
+import io
 import logging
 import ssl
 from datetime import datetime, timedelta, timezone
@@ -9,6 +10,7 @@ from email.utils import parsedate_to_datetime
 
 import certifi
 import feedparser  # type: ignore
+import requests
 
 from config import LOOKBACK_DAYS, RSS_FEEDS
 from models import Article
@@ -17,6 +19,11 @@ from models import Article
 ssl._create_default_https_context = lambda: ssl.create_default_context(
     cafile=certifi.where()
 )
+
+_SESSION = requests.Session()
+_SESSION.verify = False  # some hosted envs have self-signed proxy certs
+_SESSION.headers["User-Agent"] = "Mozilla/5.0 (compatible; smb-newsletter-bot/1.0)"
+requests.packages.urllib3.disable_warnings()  # suppress InsecureRequestWarning
 
 logger = logging.getLogger(__name__)
 
@@ -64,7 +71,9 @@ def fetch_rss() -> list[Article]:
 
     for source_name, feed_url in RSS_FEEDS.items():
         try:
-            feed = feedparser.parse(feed_url)
+            resp = _SESSION.get(feed_url, timeout=20)
+            resp.raise_for_status()
+            feed = feedparser.parse(io.BytesIO(resp.content))
         except Exception as exc:
             logger.error("Failed to parse RSS feed %s: %s", feed_url, exc)
             continue
