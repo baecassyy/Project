@@ -70,6 +70,8 @@ def score_articles(articles: list[Article]) -> list[Article]:
             parsed = json.loads(raw)
             # handle both {"articles": [...]} and bare [...]
             scores = parsed if isinstance(parsed, list) else next(iter(parsed.values()))
+            if not isinstance(scores, list):
+                raise ValueError(f"Unexpected response shape: {parsed!r}")
         except Exception as exc:
             logger.error("Groq scoring failed for batch %d: %s", batch_start, exc)
             continue
