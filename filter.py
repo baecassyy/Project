@@ -15,7 +15,7 @@ from models import Article
 logger = logging.getLogger(__name__)
 
 _BATCH_SIZE = 10
-_MODEL = "llama-3.3-70b-versatile"
+_MODEL = "openai/gpt-oss-120b"
 
 _SYSTEM_PROMPT = """\
 You are an editor for a B2B newsletter about AI tools for small businesses (SMBs).
