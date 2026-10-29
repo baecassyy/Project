@@ -55,6 +55,12 @@
     #rotate .kanji { font-family: "Noto Serif JP", serif; font-size: 38px; font-weight: 900; color: #5fe8ff; text-shadow: 0 0 12px rgba(95,232,255,.6); }
     #rotate .msg { font-size: 18px; font-weight: 700; }
     #rotate .sub { font-size: 13px; color: #7d8794; max-width: 260px; line-height: 1.5; letter-spacing: 0.06em; }
+    #rotate button {
+      margin-top: 6px; padding: 12px 22px; border: 1px solid #5b626e; border-radius: 6px; background: transparent;
+      color: #c9d0d9; font: 700 13px Rajdhani, system-ui, sans-serif; letter-spacing: 0.18em; cursor: pointer;
+    }
+    #rotate button:focus-visible { outline: 2px solid #5fe8ff; outline-offset: 3px; }
+    #boot .err { color: #c9d0d9; font-weight: 500; letter-spacing: 0.04em; max-width: 520px; text-align: center; line-height: 1.5; padding: 0 20px; }
     @keyframes turn { 0%, 20% { transform: rotate(0deg); } 50%, 80% { transform: rotate(-90deg); } 100% { transform: rotate(0deg); } }
     #boot {
       position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
@@ -71,7 +77,15 @@
     <div class="phone"></div>
     <div class="msg">ROTATE YOUR DEVICE</div>
     <div class="sub">Requiem: Shadows of Neon is played in landscape. The game is paused until you turn your screen sideways.</div>
+    <button id="rotate-anyway" type="button">PLAY ANYWAY</button>
   </div>
+  <script>
+    // Show start-up failures on screen instead of a silent black page.
+    window.addEventListener('error', function (e) {
+      var boot = document.getElementById('boot');
+      if (boot) boot.innerHTML = '<div class="err">The game could not start.<br>' + (e.message || 'Unknown error') + '</div>';
+    });
+  </script>
   <script type="module" src="/src/main.js"></script>
 </body>
 </html>

@@ -9,6 +9,17 @@ export const isIOS = () =>
 
 const orientationListeners = new Set();
 let portraitBlocked = false;
+let playAnyway = false;
+
+// How the device itself is held. The page's own box can't be trusted for this:
+// when the game is embedded (e.g. in a side panel) its frame can be taller than
+// wide even with the tablet in landscape.
+function deviceIsPortrait() {
+  const type = screen.orientation && screen.orientation.type;
+  if (type) return type.startsWith('portrait');
+  if (typeof window.orientation === 'number') return window.orientation === 0 || window.orientation === 180;
+  return window.innerHeight > window.innerWidth;
+}
 
 export function isPortraitBlocked() {
   return portraitBlocked;
@@ -21,8 +32,7 @@ export function onOrientationBlock(fn) {
 
 function updateOrientation() {
   const overlay = document.getElementById('rotate');
-  const portrait = window.innerHeight > window.innerWidth;
-  const blocked = portrait && isTouchDevice();
+  const blocked = !playAnyway && isTouchDevice() && deviceIsPortrait();
   if (overlay) overlay.classList.toggle('show', blocked);
   if (blocked !== portraitBlocked) {
     portraitBlocked = blocked;
@@ -50,6 +60,17 @@ export function setupPage() {
 
   window.addEventListener('resize', updateOrientation);
   window.addEventListener('orientationchange', () => setTimeout(updateOrientation, 120));
+  if (screen.orientation && screen.orientation.addEventListener) {
+    screen.orientation.addEventListener('change', () => setTimeout(updateOrientation, 120));
+  }
+  // Never leave the player stuck behind the rotate message.
+  const anyway = document.getElementById('rotate-anyway');
+  if (anyway) {
+    anyway.addEventListener('click', () => {
+      playAnyway = true;
+      updateOrientation();
+    });
+  }
   if (window.visualViewport) window.visualViewport.addEventListener('resize', updateOrientation);
   updateOrientation();
 }
