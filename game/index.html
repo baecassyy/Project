@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#050609" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Requiem" />
+  <meta name="format-detection" content="telephone=no" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icon-180.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet" />
+  <title>Requiem: Shadows of Neon</title>
+  <style>
+    html, body {
+      margin: 0; padding: 0; width: 100%; height: 100%;
+      background: #050609; overflow: hidden;
+      position: fixed; inset: 0;
+      overscroll-behavior: none;
+      touch-action: none;
+      -webkit-user-select: none; user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-text-size-adjust: none; text-size-adjust: none;
+    }
+    #game { position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100dvh; }
+    #game canvas { display: block; touch-action: none; outline: none; }
+    /* Reads env(safe-area-inset-*) so the game can keep UI clear of notches and rounded corners. */
+    #safe-probe {
+      position: fixed; left: 0; top: 0; width: 0; height: 0; visibility: hidden; pointer-events: none;
+      padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+    }
+    #rotate {
+      position: fixed; inset: 0; z-index: 10; display: none;
+      flex-direction: column; align-items: center; justify-content: center; gap: 22px;
+      background: radial-gradient(circle at 50% 40%, #11161d 0%, #050609 70%);
+      color: #d9dee6; font-family: Rajdhani, system-ui, sans-serif; text-align: center;
+      letter-spacing: 0.12em;
+    }
+    #rotate.show { display: flex; }
+    #rotate .phone {
+      width: 56px; height: 96px; border: 3px solid #d9dee6; border-radius: 12px; position: relative;
+      box-shadow: 0 0 18px rgba(95, 232, 255, 0.35);
+      animation: turn 2.2s ease-in-out infinite;
+    }
+    #rotate .phone::after {
+      content: ''; position: absolute; left: 50%; bottom: 6px; width: 14px; height: 3px; margin-left: -7px;
+      background: #5fe8ff; border-radius: 2px;
+    }
+    #rotate .kanji { font-family: "Noto Serif JP", serif; font-size: 38px; font-weight: 900; color: #5fe8ff; text-shadow: 0 0 12px rgba(95,232,255,.6); }
+    #rotate .msg { font-size: 18px; font-weight: 700; }
+    #rotate .sub { font-size: 13px; color: #7d8794; max-width: 260px; line-height: 1.5; letter-spacing: 0.06em; }
+    @keyframes turn { 0%, 20% { transform: rotate(0deg); } 50%, 80% { transform: rotate(-90deg); } 100% { transform: rotate(0deg); } }
+    #boot {
+      position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+      color: #5fe8ff; font: 700 16px Rajdhani, system-ui, sans-serif; letter-spacing: .3em;
+    }
+  </style>
+</head>
+<body>
+  <div id="boot">LOADING…</div>
+  <div id="game"></div>
+  <div id="safe-probe"></div>
+  <div id="rotate" role="alert">
+    <div class="kanji">回転</div>
+    <div class="phone"></div>
+    <div class="msg">ROTATE YOUR DEVICE</div>
+    <div class="sub">Requiem: Shadows of Neon is played in landscape. The game is paused until you turn your screen sideways.</div>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "requiem-shadows-of-neon",
+  "private": true,
+  "version": "1.0.0",
+  "description": "A monochrome Japanese cyberpunk action-platformer for mobile and desktop browsers.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:touch": "node tests/touch.test.cjs",
+    "test:flow": "node tests/flow.test.cjs",
+    "test:bosses": "node tests/bosses.test.cjs",
+    "test:e2e": "node tests/touch.test.cjs && node tests/flow.test.cjs && node tests/bosses.test.cjs"
+  },
+  "dependencies": {
+    "phaser": "3.90.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0",
+    "vite": "6.4.5"
+  }
+}
