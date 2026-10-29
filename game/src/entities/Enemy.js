@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { Sound } from '../core/Audio.js';
+import { difficulty } from '../core/Difficulty.js';
 
 // Shared behavior for every hostile: health, hit flash, knockback, stun after a
 // parry, an optional melee hitbox (`attackBox`) that the GameScene resolves, and
@@ -9,7 +10,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, texture, frame);
     scene.add.existing(this);
     scene.physics.add.existing(this);
-    this.hp = cfg.hp || 1;
+    const d = difficulty();
+    this.hp = Math.ceil((cfg.hp || 1) * (cfg.boss ? d.bossHp : d.enemyHp));
     this.maxHp = this.hp;
     this.contactDamage = cfg.contact ?? 1;
     this.heavy = !!cfg.heavy;
@@ -120,6 +122,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   // Called by the scene with scaled delta (seconds) only while near the camera.
   tick(dt, player) {
+    // Harder settings make enemies wind up, attack and recover faster.
+    const d = difficulty();
+    dt *= this.isBoss ? d.bossSpeed : d.enemySpeed;
     this.stateT += dt;
     if (this.stun > 0) {
       this.stun -= dt;

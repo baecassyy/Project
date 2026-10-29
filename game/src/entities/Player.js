@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { Controls } from '../core/Controls.js';
 import { Sound } from '../core/Audio.js';
+import { difficulty } from '../core/Difficulty.js';
 
 const RUN = 255;
 const ACCEL_GROUND = 2900;
@@ -12,7 +13,6 @@ const DASH_V = 650;
 const DASH_TIME = 0.17;
 const DASH_COOLDOWN = 0.4;
 const COYOTE = 0.1;
-const PARRY_WINDOW = 0.22;
 const PARRY_COOLDOWN = 0.22;
 
 // Combo chain. `hit` is the active window in seconds; `lunge` is a forward push.
@@ -157,7 +157,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.blocking && !Controls.isHeld('parry')) this.endParry();
     if (!stunned && !this.dashing && this.parryCd <= 0 && !this.parrying && !this.blocking && Controls.consume('parry', 120)) {
       this.cancelAttack();
-      this.parryT = PARRY_WINDOW;
+      this.parryT = difficulty().parryWindow;
       this.parryHolding = true;
       this.parryCd = PARRY_COOLDOWN;
       if (ax !== 0) this.facing = Math.sign(ax);
@@ -298,12 +298,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.invuln = 0.12;
       return 'block';
     }
-    this.hp = Math.max(0, this.hp - dmg);
+    this.hp = Math.max(0, this.hp - dmg * difficulty().damage);
     this.cancelAttack();
     this.endParry();
     if (this.dashing) this.endDash();
     this.hurtT = 0.32;
-    this.invuln = 1.0;
+    this.invuln = difficulty().hurtInvuln;
     const away = Math.sign(this.x - fromX) || -this.facing;
     this.body.setVelocity(away * 260, -260);
     Sound.play('hurt');

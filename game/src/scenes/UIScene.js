@@ -152,7 +152,8 @@ export class UIScene extends Phaser.Scene {
   onInit(d) {
     this.maxHp = d.max;
     this.setHp(d.hp);
-    this.stageLabel.setText(`${d.name.toUpperCase()}  ·  ${d.jp}`);
+    const hard = Store.settings.difficulty !== 'normal';
+    this.stageLabel.setText(`${d.name.toUpperCase()}  ·  ${d.jp}${hard ? '  ·  HARD' : ''}`);
     this.hideBoss();
     this.onPrompt(null);
     this.bannerBig.setAlpha(0);

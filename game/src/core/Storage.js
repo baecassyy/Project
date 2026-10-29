@@ -11,7 +11,8 @@ const DEFAULTS = {
     buttonScale: 1,
     quality: 'auto',        // auto | high | low
     touchControls: 'auto',  // auto | on | off
-    screenShake: true
+    screenShake: true,
+    difficulty: 'hard'      // normal | hard
   },
   progress: {
     unlocked: 1,      // highest stage the player may select

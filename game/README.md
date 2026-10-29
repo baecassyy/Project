@@ -96,7 +96,17 @@ fullscreen and home-screen install.
 ## Settings (saved on the device)
 
 Music volume · Sound effects · Touch control opacity · Touch button size · Touch controls
-(Auto/On/Off) · Effects quality (Auto/High/Low) · Screen shake · Fullscreen · Reset progress.
+(Auto/On/Off) · Effects quality (Auto/High/Low) · Screen shake · **Difficulty** · Fullscreen ·
+Reset progress.
+
+**Difficulty** defaults to **Hard (2×)**:
+- Every hit deals double damage.
+- Enemies and bosses have 1.5× health.
+- Enemies wind up and attack 25% faster, and bosses 30% faster.
+- Projectiles fly 25% faster.
+- The parry window is shorter (0.17 s instead of 0.22 s).
+
+**Normal** keeps the original balance. The stage name in the HUD shows "HARD" when it's on.
 
 Progress (unlocked chapters, the last shrine, defeated bosses) and settings are stored in the
 browser's `localStorage`. **CONTINUE** on the title screen resumes from the last shrine.

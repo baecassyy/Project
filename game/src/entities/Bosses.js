@@ -6,7 +6,7 @@ import { Sound } from '../core/Audio.js';
 // (bosses take +50% damage while staggered), and health bar updates.
 class Boss extends Enemy {
   constructor(scene, x, y, tex, frame, cfg) {
-    super(scene, x, y, tex, frame, { hp: cfg.hp, contact: 1, heavy: true, parryStun: cfg.parryStun || 1.6 });
+    super(scene, x, y, tex, frame, { hp: cfg.hp, boss: true, contact: 1, heavy: true, parryStun: cfg.parryStun || 1.6 });
     this.isBoss = true;
     this.key = cfg.key;
     this.title = cfg.title;

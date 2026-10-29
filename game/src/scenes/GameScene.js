@@ -10,6 +10,7 @@ import { Controls } from '../core/Controls.js';
 import { Sound } from '../core/Audio.js';
 import { Store } from '../core/Storage.js';
 import { Perf } from '../core/Perf.js';
+import { difficulty } from '../core/Difficulty.js';
 
 const R = Phaser.Geom.Rectangle;
 const overlap = Phaser.Geom.Intersects.RectangleToRectangle;
@@ -264,7 +265,8 @@ export class GameScene extends Phaser.Scene {
   fireProjectile(x, y, vx, vy, opts) {
     const p = this.projectiles.get(x, y);
     if (!p) return null;
-    return p.fire(x, y, vx, vy, opts);
+    const k = difficulty().projectileSpeed;
+    return p.fire(x, y, vx * k, vy * k, opts);
   }
 
   spawnPillar(x, delay) {

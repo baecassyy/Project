@@ -16,7 +16,7 @@ export class SettingsPanel extends Phaser.GameObjects.Container {
     const dim = scene.add.rectangle(0, 0, width, height, 0x000000, 0.78).setOrigin(0).setInteractive();
     this.add(dim);
 
-    const pw = 860, ph = 470;
+    const pw = 860, ph = 540;
     const panel = scene.add.container(width / 2, height / 2);
     this.panel = panel;
     this.add(panel);
@@ -57,8 +57,12 @@ export class SettingsPanel extends Phaser.GameObjects.Container {
       { label: 'ON', value: true }, { label: 'OFF', value: false }
     ], s.screenShake, set('screenShake')));
 
+    panel.add(new Choice(scene, rx, y + 216, colW, 'DIFFICULTY', [
+      { label: 'NORMAL', value: 'normal' }, { label: 'HARD · 2×', value: 'hard' }
+    ], s.difficulty, set('difficulty')));
+
     if (fullscreenSupported()) {
-      const fs = new Button(scene, rx + colW / 2, y + 226, colW, 46, isFullscreen() ? 'EXIT FULLSCREEN' : 'FULLSCREEN', {
+      const fs = new Button(scene, rx + colW / 2, y + 296, colW, 46, isFullscreen() ? 'EXIT FULLSCREEN' : 'FULLSCREEN', {
         size: 16, onTap: async () => {
           await toggleFullscreen();
           setTimeout(() => fs.setLabel(isFullscreen() ? 'EXIT FULLSCREEN' : 'FULLSCREEN'), 300);
@@ -105,7 +109,7 @@ export class SettingsPanel extends Phaser.GameObjects.Container {
   fit(dim) {
     const { width, height } = this.scene.scale;
     if (dim) dim.setSize(width, height);
-    const k = Math.min(1, (width - 24) / 860, (height - 24) / 470);
+    const k = Math.min(1, (width - 24) / 860, (height - 24) / 540);
     this.panel.setPosition(width / 2, height / 2).setScale(k);
   }
 
